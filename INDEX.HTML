@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgriLink AI — Farm to Market, Directly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest:#173D2E;
+    --forest-2:#0F2B21;
+    --leaf:#3F7D58;
+    --leaf-light:#5C9C74;
+    --sprout:#B9D8B7;
+    --sprout-pale:#E4EEDE;
+    --cream:#F6F5EE;
+    --cream-2:#EFEDE2;
+    --gold:#D9A441;
+    --gold-dark:#B9822F;
+    --ink:#16241A;
+    --ink-soft:#4A5A4C;
+    --line: rgba(23,61,46,0.14);
+    --white:#FFFFFF;
+    --radius-s: 6px;
+    --radius-m: 14px;
+    --radius-l: 26px;
+    --max: 1180px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Work Sans', sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    margin:0;
+    color:var(--forest-2);
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  img,svg{display:block;max-width:100%;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;}
+  .mono{font-family:'JetBrains Mono', monospace;}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 32px;}
+  section{position:relative;}
+
+  /* ---------- soil-row divider ---------- */
+  .soil-divider{
+    height:34px;
+    width:100%;
+    display:block;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 26px;
+    border-radius:100px;
+    font-weight:600;
+    font-size:15px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--forest);
+    color:var(--cream);
+  }
+  .btn-primary:hover{ background:var(--forest-2); transform:translateY(-2px); box-shadow:0 10px 22px rgba(15,43,33,.25);}
+  .btn-gold{
+    background:var(--gold);
+    color:var(--forest-2);
+  }
+  .btn-gold:hover{ background:var(--gold-dark); transform:translateY(-2px); box-shadow:0 10px 22px rgba(185,130,47,.3);}
+  .btn-outline{
+    background:transparent;
+    border:1.5px solid var(--forest);
+    color:var(--forest);
+  }
+  .btn-outline:hover{ background:var(--forest); color:var(--cream);}
+  .btn-ghost-light{
+    background:rgba(255,255,255,.14);
+    color:var(--cream);
+    border:1.5px solid rgba(246,245,238,.4);
+  }
+  .btn-ghost-light:hover{ background:rgba(255,255,255,.24);}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(246,245,238,.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px;
+    max-width:var(--max); margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif; font-weight:600; font-size:20px;
+    color:var(--forest-2);
+  }
+  .logo-mark{width:34px;height:34px;flex:none;}
+  .nav-links{
+    display:flex; align-items:center; gap:30px;
+    font-size:15px; font-weight:500; color:var(--ink-soft);
+  }
+  .nav-links a{ transition:color .15s ease; padding:6px 0; position:relative;}
+  .nav-links a:hover{ color:var(--forest);}
+  .nav-cta{ display:flex; align-items:center; gap:14px;}
+  .login-link{font-weight:500; font-size:15px; color:var(--ink-soft);}
+  .login-link:hover{color:var(--forest);}
+  .burger{display:none; width:26px; height:20px; position:relative; flex:none;}
+  .burger span{
+    position:absolute; left:0; width:100%; height:2px; background:var(--forest-2); border-radius:2px;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .burger span:nth-child(1){top:0;}
+  .burger span:nth-child(2){top:9px;}
+  .burger span:nth-child(3){top:18px;}
+  .burger.open span:nth-child(1){transform:translateY(9px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--cream);
+    padding:76px 0 40px;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr .95fr; gap:52px; align-items:center;
+  }
+  .eyebrow-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--sprout-pale); color:var(--forest);
+    padding:8px 16px; border-radius:100px; font-size:13.5px; font-weight:600;
+    margin-bottom:22px;
+  }
+  .eyebrow-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
+  .hero h1{
+    font-size:clamp(38px, 4.6vw, 62px);
+    line-height:1.05;
+    max-width:640px;
+  }
+  .hero h1 em{ font-style:italic; color:var(--leaf);}
+  .hero p.lead{
+    margin-top:22px; font-size:18px; color:var(--ink-soft); max-width:480px;
+  }
+  .hero-actions{display:flex; gap:14px; margin-top:32px; flex-wrap:wrap;}
+  .hero-stats{
+    display:flex; gap:34px; margin-top:46px; flex-wrap:wrap;
+  }
+  .hero-stats div{border-left:2px solid var(--sprout); padding-left:14px;}
+  .hero-stats .num{font-family:'Fraunces',serif; font-size:26px; font-weight:600; color:var(--forest-2);}
+  .hero-stats .lbl{font-size:13.5px; color:var(--ink-soft);}
+
+  .hero-art{position:relative;}
+
+  /* ---------- Section headings ---------- */
+  .sec-head{ max-width:600px; margin-bottom:44px;}
+  .sec-head h2{ font-size:clamp(28px,3.2vw,40px); line-height:1.12;}
+  .sec-head p{ margin-top:14px; color:var(--ink-soft); font-size:16.5px;}
+  .sec-pad{padding:88px 0;}
+
+  /* ---------- Problem section ---------- */
+  .problem{background:var(--forest-2); color:var(--cream);}
+  .problem .sec-head h2{color:var(--cream);}
+  .problem .sec-head p{color:rgba(246,245,238,.72);}
+  .chain{
+    display:flex; align-items:center; gap:0; flex-wrap:wrap;
+    margin-bottom:56px;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:var(--radius-l);
+    padding:26px 22px;
+  }
+  .chain-step{
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+    flex:1; min-width:100px; text-align:center; font-size:13.5px; color:rgba(246,245,238,.85);
+    padding:6px;
+  }
+  .chain-step .badge{
+    width:44px; height:44px; border-radius:50%;
+    background:rgba(217,164,65,.16); border:1px solid rgba(217,164,65,.4);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; color:var(--gold); font-weight:600;
+  }
+  .chain-arrow{ color:rgba(246,245,238,.35); font-size:20px; padding:0 4px;}
+  .chain-step.endpoint .badge{ background:rgba(185,216,183,.18); border-color:rgba(185,216,183,.5); color:var(--sprout);}
+
+  .problem-list{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:18px;
+  }
+  .problem-item{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:var(--radius-m);
+    padding:20px 20px 22px;
+  }
+  .problem-item .n{ font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--gold); letter-spacing:.02em;}
+  .problem-item p{margin-top:10px; font-size:15px; color:rgba(246,245,238,.85);}
+
+  /* ---------- Solution ---------- */
+  .solution-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  .sol-card{
+    background:var(--white);
+    border-radius:var(--radius-l);
+    padding:34px 28px;
+    border:1px solid var(--line);
+  }
+  .sol-card:nth-child(2){ border-radius: 14px 44px 14px 44px; }
+  .sol-card:nth-child(3){ border-radius: 44px 14px 44px 14px; }
+  .sol-icon{
+    width:52px; height:52px; border-radius:14px;
+    background:var(--sprout-pale);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:22px;
+  }
+  .sol-card h3{ font-size:21px; margin-bottom:10px;}
+  .sol-card p{ color:var(--ink-soft); font-size:15px;}
+  .sol-card ul{margin-top:14px;}
+  .sol-card li{ font-size:14.5px; color:var(--ink-soft); padding-left:18px; position:relative; margin-top:7px;}
+  .sol-card li::before{content:"—"; position:absolute; left:0; color:var(--leaf);}
+
+  /* ---------- Marketplace ---------- */
+  .market{background:var(--white);}
+  .market-controls{
+    display:flex; gap:14px; flex-wrap:wrap; margin-bottom:34px;
+    align-items:center;
+  }
+  .search-box{
+    flex:1; min-width:220px; display:flex; align-items:center; gap:10px;
+    background:var(--cream); border:1px solid var(--line); border-radius:100px;
+    padding:12px 20px;
+  }
+  .search-box input{
+    border:none; background:transparent; outline:none; font-size:15px; width:100%; font-family:inherit; color:var(--ink);
+  }
+  select.filter{
+    background:var(--cream); border:1px solid var(--line); border-radius:100px;
+    padding:12px 18px; font-size:14.5px; font-family:inherit; color:var(--ink); outline:none;
+  }
+  .product-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:22px;
+  }
+  .product-card{
+    border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;
+    background:var(--cream); transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .product-card:hover{ box-shadow:0 14px 30px rgba(23,61,46,.12); transform:translateY(-3px);}
+  .product-media{
+    height:150px; display:flex; align-items:center; justify-content:center;
+    background:var(--sprout-pale);
+  }
+  .product-media svg{width:74px;height:74px;}
+  .product-body{padding:18px 20px 20px;}
+  .product-body .pname{font-family:'Fraunces',serif; font-size:19px; font-weight:600; color:var(--forest-2);}
+  .product-body .pmeta{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
+  .product-row{
+    display:flex; align-items:center; justify-content:space-between;
+    margin-top:14px; padding-top:14px; border-top:1px dashed var(--line);
+  }
+  .price{ font-family:'JetBrains Mono',monospace; font-size:17px; color:var(--forest);}
+  .price span{font-size:12px; color:var(--ink-soft);}
+  .stock{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+  .buy-btn{
+    background:var(--forest); color:var(--cream); font-size:13.5px; font-weight:600;
+    padding:9px 16px; border-radius:100px;
+  }
+  .buy-btn:hover{background:var(--forest-2);}
+  .buy-btn.bought{background:var(--leaf-light);}
+  .no-results{ grid-column:1/-1; text-align:center; padding:40px 0; color:var(--ink-soft);}
+
+  /* ---------- Dashboard tabs ---------- */
+  .dash{background:var(--sprout-pale);}
+  .dash-tabs{
+    display:inline-flex; background:var(--white); padding:6px; border-radius:100px; margin-bottom:34px;
+    border:1px solid var(--line);
+  }
+  .dash-tab{
+    padding:11px 24px; border-radius:100px; font-size:14.5px; font-weight:600; color:var(--ink-soft);
+  }
+  .dash-tab.active{ background:var(--forest); color:var(--cream);}
+  .dash-panel{ display:none;}
+  .dash-panel.active{ display:block; animation:fadeIn .35s ease;}
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  .dash-cards{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:22px;
+  }
+  .dash-card{
+    background:var(--white); border-radius:var(--radius-m); padding:22px 20px; border:1px solid var(--line);
+  }
+  .dash-card .lbl{font-size:13px; color:var(--ink-soft);}
+  .dash-card .val{font-family:'Fraunces',serif; font-size:27px; color:var(--forest-2); margin-top:6px;}
+  .dash-card .sub{font-size:12.5px; color:var(--leaf); margin-top:4px;}
+  .forecast-banner{
+    background:var(--forest-2); color:var(--cream); border-radius:var(--radius-m);
+    padding:24px 26px; display:flex; align-items:center; gap:18px;
+  }
+  .forecast-banner .ico{width:40px;height:40px;flex:none;}
+  .forecast-banner strong{ font-family:'Fraunces',serif; font-weight:600; font-size:17px;}
+  .forecast-banner span{ display:block; font-size:13.5px; color:rgba(246,245,238,.7); margin-top:3px;}
+
+  .buyer-table{
+    width:100%; border-collapse:collapse; background:var(--white); border-radius:var(--radius-m); overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .buyer-table th, .buyer-table td{ text-align:left; padding:14px 18px; font-size:14.5px; border-bottom:1px solid var(--line);}
+  .buyer-table th{ background:var(--cream); color:var(--ink-soft); font-weight:600; font-size:12.5px; letter-spacing:.02em;}
+  .buyer-table tr:last-child td{border-bottom:none;}
+  .status-chip{ font-size:12px; font-weight:600; padding:4px 12px; border-radius:100px;}
+  .status-transit{ background:#FCEFD9; color:var(--gold-dark);}
+  .status-delivered{ background:var(--sprout-pale); color:var(--leaf);}
+
+  /* ---------- AI Insights ---------- */
+  .ai{background:var(--forest);}
+  .ai .sec-head h2{color:var(--cream);}
+  .ai .sec-head p{color:rgba(246,245,238,.72);}
+  .ai-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .ai-card{
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:var(--radius-m); padding:24px 20px;
+  }
+  .ai-card .tag{ font-size:12.5px; color:var(--sprout); font-weight:600;}
+  .ai-card .big{ font-family:'Fraunces',serif; font-size:25px; color:var(--cream); margin-top:12px;}
+  .ai-card .note{ font-size:13px; color:rgba(246,245,238,.65); margin-top:8px;}
+  .trend-up{color:#9FD9A0;}
+  .trend-down{color:#E9A5A5;}
+
+  /* ---------- Logistics ---------- */
+  .logi-grid{ display:grid; grid-template-columns:1fr 1fr; gap:52px; align-items:center;}
+  .logi-list li{
+    display:flex; gap:14px; padding:14px 0; border-bottom:1px solid var(--line);
+  }
+  .logi-list li:last-child{border-bottom:none;}
+  .logi-list .lico{width:22px;height:22px;flex:none; margin-top:2px; color:var(--leaf);}
+  .logi-list h4{font-size:16px; margin-bottom:3px;}
+  .logi-list p{font-size:14.5px; color:var(--ink-soft);}
+
+  /* ---------- Benefits ---------- */
+  .benefits-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .benefit-card{ padding:8px 4px;}
+  .benefit-card .bico{
+    width:50px;height:50px; border-radius:50%; background:var(--sprout-pale);
+    display:flex; align-items:center; justify-content:center; margin-bottom:18px;
+  }
+  .benefit-card h4{font-size:18px; margin-bottom:10px;}
+  .benefit-card li{font-size:14.5px; color:var(--ink-soft); padding-left:16px; position:relative; margin-top:6px;}
+  .benefit-card li::before{content:"·"; position:absolute; left:0; color:var(--gold); font-size:20px; line-height:1; top:-2px;}
+
+  /* ---------- How it works ---------- */
+  .how{background:var(--white);}
+  .how-steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative;}
+  .how-step{ position:relative; padding:0 18px 0 0;}
+  .how-step .stepnum{
+    font-family:'Fraunces',serif; font-size:44px; color:var(--sprout); font-weight:600; line-height:1;
+  }
+  .how-step h4{ font-size:17px; margin:14px 0 8px;}
+  .how-step p{ font-size:14.5px; color:var(--ink-soft);}
+  .how-step:not(:last-child)::after{
+    content:""; position:absolute; top:22px; right:-2px; width:calc(100% - 60px); height:2px;
+    background-image:linear-gradient(to right, var(--sprout) 0 6px, transparent 6px 12px);
+    background-size:12px 2px; background-repeat:repeat-x;
+    display:none;
+  }
+  @media(min-width:900px){ .how-step:not(:last-child)::after{display:block;} }
+
+  /* ---------- Stats ---------- */
+  .stats{ background:var(--forest-2); color:var(--cream);}
+  .stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; text-align:left;}
+  .stat-num{ font-family:'Fraunces',serif; font-size:clamp(34px,4vw,52px); color:var(--gold); font-weight:600;}
+  .stat-lbl{ font-size:14.5px; color:rgba(246,245,238,.75); margin-top:6px;}
+  .stats-note{ margin-top:36px; font-size:13px; color:rgba(246,245,238,.5);}
+
+  /* ---------- Testimonials ---------- */
+  .testi-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .testi-card{
+    background:var(--white); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:26px 24px;
+  }
+  .testi-quote{font-size:16px; color:var(--ink); font-style:italic; line-height:1.6;}
+  .testi-who{ display:flex; align-items:center; gap:12px; margin-top:20px;}
+  .avatar{
+    width:42px;height:42px;border-radius:50%; flex:none;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--cream); font-family:'Fraunces',serif; font-weight:600; font-size:16px;
+  }
+  .testi-who .name{font-weight:600; font-size:14.5px; color:var(--forest-2);}
+  .testi-who .role{font-size:13px; color:var(--ink-soft);}
+
+  /* ---------- CTA ---------- */
+  .cta-block{
+    background:var(--leaf); color:var(--cream); border-radius:var(--radius-l);
+    padding:64px 56px; text-align:left; position:relative; overflow:hidden;
+  }
+  .cta-block h2{ color:var(--cream); font-size:clamp(28px,3.6vw,42px); max-width:600px;}
+  .cta-block .actions{ display:flex; gap:14px; margin-top:30px; flex-wrap:wrap;}
+
+  /* ---------- Footer ---------- */
+  footer{ background:var(--forest-2); color:rgba(246,245,238,.7); padding:64px 0 30px;}
+  .footer-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:36px; padding-bottom:40px; border-bottom:1px solid rgba(255,255,255,.1);}
+  .footer-logo{ display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-size:19px; color:var(--cream); font-weight:600; margin-bottom:14px;}
+  .footer-grid p{font-size:14px; max-width:260px;}
+  .footer-col h5{ color:var(--cream); font-size:14px; margin-bottom:16px; font-weight:600;}
+  .footer-col li{ font-size:14px; margin-top:10px;}
+  .footer-col a:hover{color:var(--cream);}
+  .socials{ display:flex; gap:12px; margin-top:18px;}
+  .socials a{
+    width:36px;height:36px;border-radius:50%; background:rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .socials a:hover{ background:rgba(255,255,255,.16);}
+  .footer-bottom{ display:flex; justify-content:space-between; padding-top:24px; font-size:13px; flex-wrap:wrap; gap:10px;}
+
+  /* ---------- Reveal on scroll (single orchestrated moment per section) ---------- */
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{ opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .reveal{ opacity:1; transform:none; transition:none;}
+    *{transition:none !important; animation:none !important;}
+  }
+
+  :focus-visible{ outline:2.5px solid var(--gold); outline-offset:3px; border-radius:4px;}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:980px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-art{order:-1;}
+    .problem-list{grid-template-columns:repeat(2,1fr);}
+    .solution-grid{grid-template-columns:1fr;}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+    .dash-cards{grid-template-columns:repeat(2,1fr);}
+    .ai-grid{grid-template-columns:repeat(2,1fr);}
+    .logi-grid{grid-template-columns:1fr;}
+    .benefits-grid{grid-template-columns:repeat(2,1fr);}
+    .how-steps{grid-template-columns:repeat(2,1fr); row-gap:30px;}
+    .stats-grid{grid-template-columns:repeat(2,1fr); row-gap:26px;}
+    .testi-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:720px){
+    .nav-links{
+      position:fixed; top:68px; left:0; right:0; bottom:0;
+      background:var(--cream); flex-direction:column; align-items:flex-start; gap:2px;
+      padding:20px 32px; transform:translateX(100%); transition:transform .3s ease;
+      overflow-y:auto;
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-links a{padding:14px 0; width:100%; border-bottom:1px solid var(--line); font-size:16px;}
+    .nav-cta .login-link{display:none;}
+    .burger{display:block;}
+    .wrap{padding:0 20px;}
+    .sec-pad{padding:60px 0;}
+    .problem-list{grid-template-columns:1fr;}
+    .chain{flex-direction:column; align-items:stretch;}
+    .chain-arrow{transform:rotate(90deg); align-self:center;}
+    .product-grid{grid-template-columns:1fr;}
+    .dash-cards{grid-template-columns:1fr;}
+    .ai-grid{grid-template-columns:1fr;}
+    .benefits-grid{grid-template-columns:1fr;}
+    .how-steps{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .cta-block{padding:42px 26px;}
+    .market-controls{flex-direction:column; align-items:stretch;}
+    .buyer-table{display:block; overflow-x:auto; white-space:nowrap;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<header>
+  <nav class="nav">
+    <a href="#" class="logo">
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="20" fill="#173D2E"/>
+        <path d="M20 30C20 30 11 25.5 11 18.5C11 14.9101 13.9101 12 17.5 12C18.9797 12 20 13 20 13C20 13 21.0203 12 22.5 12C26.0899 12 29 14.9101 29 18.5C29 25.5 20 30 20 30Z" fill="#B9D8B7"/>
+        <path d="M20 30V17" stroke="#173D2E" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      AgriLink AI
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#marketplace">Marketplace</a></li>
+      <li><a href="#dashboards">Farmers</a></li>
+      <li><a href="#dashboards">Buyers</a></li>
+      <li><a href="#logistics">Logistics</a></li>
+      <li><a href="#insights">AI Insights</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#" class="login-link">Log in</a>
+      <a href="#marketplace" class="btn btn-primary">Get started</a>
+      <button class="burger" id="burger" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-pill"><span class="dot"></span> AI-powered agricultural marketplace</div>
+      <h1>From farm to market, <em>directly.</em></h1>
+      <p class="lead">Connect farmers and FPOs directly with consumers and bulk buyers — with demand forecasting, price guidance and delivery routing built in.</p>
+      <div class="hero-actions">
+        <a href="#marketplace" class="btn btn-primary">Explore marketplace</a>
+        <a href="#dashboards" class="btn btn-outline">Join as farmer</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="num">10,000+</div><div class="lbl">Farmers onboard</div></div>
+        <div><div class="num">5,000+</div><div class="lbl">Active buyers</div></div>
+        <div><div class="num">30%</div><div class="lbl">Fewer middle stops</div></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 560 460" width="100%">
+        <ellipse cx="280" cy="410" rx="260" ry="30" fill="#EFEDE2"/>
+        <circle cx="460" cy="80" r="46" fill="#D9A441"/>
+        <path d="M0 260C90 220 150 300 240 250C330 200 400 260 480 220C540 195 560 210 560 210V460H0V260Z" fill="#B9D8B7"/>
+        <path d="M0 300C80 270 160 330 250 295C340 260 420 310 500 275C530 262 560 268 560 268V460H0V300Z" fill="#8AB98D"/>
+        <path d="M0 340C70 320 150 360 230 335C320 305 410 350 500 320C530 310 560 316 560 316V460H0V340Z" fill="#5C9C74"/>
+        <!-- crates -->
+        <g transform="translate(120,255)">
+          <rect x="0" y="20" width="60" height="46" rx="4" fill="#B9822F"/>
+          <rect x="0" y="20" width="60" height="10" fill="#D9A441"/>
+          <circle cx="15" cy="14" r="10" fill="#E85C4A"/>
+          <circle cx="32" cy="9" r="10" fill="#E85C4A"/>
+          <circle cx="49" cy="14" r="10" fill="#E85C4A"/>
+        </g>
+        <g transform="translate(330,270)">
+          <rect x="0" y="14" width="52" height="40" rx="4" fill="#B9822F"/>
+          <rect x="0" y="14" width="52" height="9" fill="#D9A441"/>
+          <path d="M8 10 Q26 -10 44 10" stroke="#3F7D58" stroke-width="6" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- delivery truck -->
+        <g transform="translate(210,330)">
+          <rect x="0" y="10" width="110" height="46" rx="6" fill="#173D2E"/>
+          <rect x="110" y="24" width="42" height="32" rx="5" fill="#173D2E"/>
+          <rect x="118" y="30" width="18" height="14" rx="2" fill="#E4EEDE"/>
+          <circle cx="30" cy="62" r="12" fill="#0F2B21"/>
+          <circle cx="30" cy="62" r="5" fill="#E4EEDE"/>
+          <circle cx="128" cy="62" r="12" fill="#0F2B21"/>
+          <circle cx="128" cy="62" r="5" fill="#E4EEDE"/>
+          <rect x="12" y="20" width="40" height="24" rx="3" fill="#B9D8B7"/>
+        </g>
+        <!-- phone / marketplace link -->
+        <g transform="translate(400,140)">
+          <rect x="0" y="0" width="86" height="150" rx="16" fill="#173D2E"/>
+          <rect x="7" y="12" width="72" height="112" rx="4" fill="#F6F5EE"/>
+          <rect x="16" y="24" width="54" height="8" rx="2" fill="#B9D8B7"/>
+          <rect x="16" y="40" width="40" height="6" rx="2" fill="#DDD9CB"/>
+          <rect x="16" y="58" width="54" height="34" rx="6" fill="#E4EEDE"/>
+          <circle cx="30" cy="75" r="8" fill="#D9A441"/>
+          <rect x="44" y="70" width="20" height="5" rx="2" fill="#4A5A4C"/>
+          <rect x="44" y="80" width="14" height="5" rx="2" fill="#8AA98F"/>
+          <rect x="16" y="100" width="54" height="16" rx="8" fill="#3F7D58"/>
+        </g>
+        <path d="M300 220 C340 190 370 180 398 175" stroke="#B9822F" stroke-width="2.5" stroke-dasharray="1 8" stroke-linecap="round" fill="none"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROBLEM ================= -->
+<section class="problem sec-pad" id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>The problem in today's agricultural supply chain</h2>
+      <p>Every extra stop between a farm and a plate adds cost, time and waste — and takes money away from the people who grew the food.</p>
+    </div>
+
+    <div class="chain reveal">
+      <div class="chain-step"><div class="badge">🌾</div>Farmer</div>
+      <div class="chain-arrow">›</div>
+      <div class="chain-step"><div class="badge">↔</div>Trader</div>
+      <div class="chain-arrow">›</div>
+      <div class="chain-step"><div class="badge">🏬</div>Wholesaler</div>
+      <div class="chain-arrow">›</div>
+      <div class="chain-step"><div class="badge">🚚</div>Distributor</div>
+      <div class="chain-arrow">›</div>
+      <div class="chain-step"><div class="badge">🏪</div>Retailer</div>
+      <div class="chain-arrow">›</div>
+      <div class="chain-step endpoint"><div class="badge">🧺</div>Consumer</div>
+    </div>
+
+    <div class="problem-list reveal">
+      <div class="problem-item"><div class="n">01</div><p>Farmers earn a small share of the final retail price</p></div>
+      <div class="problem-item"><div class="n">02</div><p>Consumers pay more than the produce should cost</p></div>
+      <div class="problem-item"><div class="n">03</div><p>Too many intermediaries slow everything down</p></div>
+      <div class="problem-item"><div class="n">04</div><p>Poor transport planning wastes fuel and time</p></div>
+      <div class="problem-item"><div class="n">05</div><p>Produce spoils in transit before it reaches a buyer</p></div>
+      <div class="problem-item"><div class="n">06</div><p>No one has reliable visibility into real demand</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SOLUTION ================= -->
+<section class="sec-pad" id="solution">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Our smart solution</h2>
+      <p>Three connected systems that shorten the distance between a harvest and a sale.</p>
+    </div>
+    <div class="solution-grid reveal">
+      <div class="sol-card">
+        <div class="sol-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 4 16.5 4 10.5C4 7.46 6.46 5 9.5 5C10.85 5 12 5.7 12 5.7C12 5.7 13.15 5 14.5 5C17.54 5 20 7.46 20 10.5C20 16.5 12 21 12 21Z" stroke="#173D2E" stroke-width="1.6"/></svg></div>
+        <h3>Direct marketplace</h3>
+        <p>Farmers and FPOs list produce and connect straight to consumers and bulk buyers — no extra hops in between.</p>
+        <ul>
+          <li>Verified farmer &amp; FPO profiles</li>
+          <li>Transparent, published pricing</li>
+          <li>Direct messaging with buyers</li>
+        </ul>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="2" y="9" width="13" height="8" rx="1.5" stroke="#173D2E" stroke-width="1.6"/><path d="M15 12H18.5L21 15V17H15V12Z" stroke="#173D2E" stroke-width="1.6"/><circle cx="6" cy="18.5" r="1.7" stroke="#173D2E" stroke-width="1.4"/><circle cx="17.5" cy="18.5" r="1.7" stroke="#173D2E" stroke-width="1.4"/></svg></div>
+        <h3>Smart logistics</h3>
+        <p>Pickup and delivery run on optimised routes, so produce moves faster and fresher.</p>
+        <ul>
+          <li>Delivery management</li>
+          <li>Route optimisation</li>
+          <li>Live order tracking</li>
+        </ul>
+      </div>
+      <div class="sol-card">
+        <div class="sol-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 17L9 11L13 15L21 6" stroke="#173D2E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 6H21V12" stroke="#173D2E" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>AI-powered forecasting</h3>
+        <p>Demand and price signals help farmers plan what to grow and when to sell.</p>
+        <ul>
+          <li>Demand prediction</li>
+          <li>Price trend alerts</li>
+          <li>Supply planning</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MARKETPLACE ================= -->
+<section class="sec-pad market" id="marketplace">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Fresh from farmers</h2>
+      <p>Search by crop, filter by location, and buy straight from the people who grew it.</p>
+    </div>
+
+    <div class="market-controls reveal">
+      <div class="search-box">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#4A5A4C" stroke-width="1.8"/><path d="M20 20L16.5 16.5" stroke="#4A5A4C" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="Search tomato, onion, rice…">
+      </div>
+      <select class="filter" id="categoryFilter">
+        <option value="all">All categories</option>
+        <option value="vegetable">Vegetables</option>
+        <option value="grain">Grains</option>
+        <option value="fruit">Fruits</option>
+      </select>
+      <select class="filter" id="locationFilter">
+        <option value="all">All locations</option>
+        <option value="Erode">Erode</option>
+        <option value="Salem">Salem</option>
+        <option value="Coimbatore">Coimbatore</option>
+        <option value="Thanjavur">Thanjavur</option>
+      </select>
+    </div>
+
+    <div class="product-grid reveal" id="productGrid"></div>
+  </div>
+</section>
+
+<!-- ================= DASHBOARDS ================= -->
+<section class="sec-pad dash" id="dashboards">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>One account, both sides of the trade</h2>
+      <p>Farmers see what to grow next. Buyers see what's available now.</p>
+    </div>
+
+    <div class="dash-tabs reveal">
+      <button class="dash-tab active" data-tab="farmer">Farmer dashboard</button>
+      <button class="dash-tab" data-tab="buyer">Buyer dashboard</button>
+    </div>
+
+    <div class="dash-panel active reveal" id="panel-farmer">
+      <div class="dash-cards">
+        <div class="dash-card"><div class="lbl">Total sales</div><div class="val">₹1,84,200</div><div class="sub">This season</div></div>
+        <div class="dash-card"><div class="lbl">Active orders</div><div class="val">14</div><div class="sub">3 awaiting pickup</div></div>
+        <div class="dash-card"><div class="lbl">Available stock</div><div class="val">2,340 kg</div><div class="sub">Across 4 crops</div></div>
+        <div class="dash-card"><div class="lbl">Current market price</div><div class="val mono">₹32/kg</div><div class="sub">Tomato, today</div></div>
+      </div>
+      <div class="forecast-banner">
+        <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M3 17L9 11L13 15L21 6" stroke="#B9D8B7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M15 6H21V12" stroke="#B9D8B7" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><strong>Tomato demand expected to increase by 24% next week</strong><span>Consider holding part of your stock back for Thursday's price rise.</span></div>
+      </div>
+    </div>
+
+    <div class="dash-panel" id="panel-buyer">
+      <div class="dash-cards">
+        <div class="dash-card"><div class="lbl">Orders this month</div><div class="val">28</div><div class="sub">₹96,400 spent</div></div>
+        <div class="dash-card"><div class="lbl">Saved suppliers</div><div class="val">11</div><div class="sub">Across 5 districts</div></div>
+        <div class="dash-card"><div class="lbl">Avg. price vs. market</div><div class="val">−12%</div><div class="sub">Below retail average</div></div>
+        <div class="dash-card"><div class="lbl">On-time delivery</div><div class="val">96%</div><div class="sub">Last 30 days</div></div>
+      </div>
+      <table class="buyer-table">
+        <thead><tr><th>Order</th><th>Farmer / FPO</th><th>Quantity</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>#AG-2381</td><td>Ramasamy Farms, Erode</td><td>200 kg tomato</td><td><span class="status-chip status-transit">In transit</span></td></tr>
+          <tr><td>#AG-2379</td><td>Kaveri FPO, Thanjavur</td><td>500 kg rice</td><td><span class="status-chip status-delivered">Delivered</span></td></tr>
+          <tr><td>#AG-2374</td><td>Green Valley Growers, Salem</td><td>150 kg carrot</td><td><span class="status-chip status-delivered">Delivered</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AI INSIGHTS ================= -->
+<section class="sec-pad ai" id="insights">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>AI that makes agriculture smarter</h2>
+      <p>The same signals farmers and buyers see, running quietly in the background of every order.</p>
+    </div>
+    <div class="ai-grid reveal">
+      <div class="ai-card">
+        <div class="tag">Demand forecast</div>
+        <div class="big trend-up">Tomato ↑ 24%</div>
+        <div class="note">Expected rise in orders next week</div>
+      </div>
+      <div class="ai-card">
+        <div class="tag">Price prediction</div>
+        <div class="big">₹32/kg</div>
+        <div class="note">Projected tomato price, Erode region</div>
+      </div>
+      <div class="ai-card">
+        <div class="tag">Route optimisation</div>
+        <div class="big trend-up">−18%</div>
+        <div class="note">Reduction in delivery distance this week</div>
+      </div>
+      <div class="ai-card">
+        <div class="tag">Supply alert</div>
+        <div class="big trend-down">Onion ↓</div>
+        <div class="note">Supply may run low next week</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LOGISTICS ================= -->
+<section class="sec-pad" id="logistics">
+  <div class="wrap logi-grid">
+    <div class="reveal">
+      <div class="sec-head" style="margin-bottom:28px;">
+        <h2>Smart logistics, faster delivery</h2>
+        <p>From the field to the last mile, every pickup is planned around freshness.</p>
+      </div>
+      <ul class="logi-list">
+        <li><svg class="lico" viewBox="0 0 24 24" fill="none"><path d="M12 21C12 21 5 16 5 10.5C5 6.9 7.9 4 11.5 4C13 4 12 4 12 4C12 4 13 4 12.5 4C16.1 4 19 6.9 19 10.5C19 16 12 21 12 21Z" stroke="#3F7D58" stroke-width="1.6"/></svg><div><h4>Pickup from farm</h4><p>Scheduled collection direct from the farm gate.</p></div></li>
+        <li><svg class="lico" viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="13" height="9" rx="1.4" stroke="#3F7D58" stroke-width="1.6"/><path d="M15 10H18.5L21 13V16H15V10Z" stroke="#3F7D58" stroke-width="1.6"/></svg><div><h4>Vehicle allocation</h4><p>Right-sized vehicles matched to order volume.</p></div></li>
+        <li><svg class="lico" viewBox="0 0 24 24" fill="none"><path d="M4 18L9 8L14 15L20 5" stroke="#3F7D58" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4>Route optimisation</h4><p>Shortest, freshest path between stops.</p></div></li>
+        <li><svg class="lico" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="#3F7D58" stroke-width="1.6"/><path d="M12 7V12L15.5 14" stroke="#3F7D58" stroke-width="1.6" stroke-linecap="round"/></svg><div><h4>Live order tracking</h4><p>Buyers see exactly where an order is, in real time.</p></div></li>
+        <li><svg class="lico" viewBox="0 0 24 24" fill="none"><path d="M5 12L10 17L19 7" stroke="#3F7D58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><div><h4>Delivery status</h4><p>Confirmed handoff, every time, with a timestamp.</p></div></li>
+      </ul>
+    </div>
+    <div class="reveal">
+      <svg viewBox="0 0 480 400" width="100%">
+        <rect x="0" y="0" width="480" height="400" rx="24" fill="#E4EEDE"/>
+        <path d="M40 320C90 260 130 300 180 250C230 200 280 260 330 210C370 170 400 190 440 150" stroke="#3F7D58" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" fill="none"/>
+        <circle cx="40" cy="320" r="9" fill="#173D2E"/>
+        <circle cx="180" cy="250" r="7" fill="#B9822F"/>
+        <circle cx="330" cy="210" r="7" fill="#B9822F"/>
+        <circle cx="440" cy="150" r="10" fill="#D9A441"/>
+        <g transform="translate(150,230)">
+          <rect x="0" y="6" width="42" height="20" rx="3" fill="#173D2E"/>
+          <rect x="42" y="12" width="16" height="14" rx="2" fill="#173D2E"/>
+          <circle cx="10" cy="28" r="5" fill="#0F2B21"/>
+          <circle cx="46" cy="28" r="5" fill="#0F2B21"/>
+        </g>
+        <text x="40" y="345" font-family="Work Sans" font-size="12" fill="#4A5A4C">Farm</text>
+        <text x="410" y="140" font-family="Work Sans" font-size="12" fill="#4A5A4C">Buyer</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BENEFITS ================= -->
+<section class="sec-pad" style="background:var(--white);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>Creating value for everyone</h2>
+      <p>A shorter chain means something better for every link in it.</p>
+    </div>
+    <div class="benefits-grid reveal">
+      <div class="benefit-card">
+        <div class="bico">🌾</div>
+        <h4>Farmers</h4>
+        <ul><li>Better prices</li><li>Direct customers</li><li>Increased income</li></ul>
+      </div>
+      <div class="benefit-card">
+        <div class="bico">🧺</div>
+        <h4>Consumers</h4>
+        <ul><li>Lower prices</li><li>Fresher produce</li><li>Transparent pricing</li></ul>
+      </div>
+      <div class="benefit-card">
+        <div class="bico">🏢</div>
+        <h4>Bulk buyers</h4>
+        <ul><li>Reliable supply</li><li>Bulk purchasing</li><li>Direct sourcing</li></ul>
+      </div>
+      <div class="benefit-card">
+        <div class="bico">🚚</div>
+        <h4>Logistics partners</h4>
+        <ul><li>Optimised routes</li><li>More efficient runs</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="sec-pad how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>How it works</h2>
+      <p>Four steps between a harvest and a doorstep.</p>
+    </div>
+    <div class="how-steps reveal">
+      <div class="how-step"><div class="stepnum">01</div><h4>Register</h4><p>Create a farmer or buyer profile in minutes.</p></div>
+      <div class="how-step"><div class="stepnum">02</div><h4>List or find produce</h4><p>Farmers list what's ready; buyers search what they need.</p></div>
+      <div class="how-step"><div class="stepnum">03</div><h4>Place an order</h4><p>Agree a price and quantity directly.</p></div>
+      <div class="how-step"><div class="stepnum">04</div><h4>Smart delivery</h4><p>Pickup and route planning handle the rest.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<section class="sec-pad stats">
+  <div class="wrap">
+    <div class="sec-head reveal"><h2 style="color:var(--cream)">Where things stand today</h2></div>
+    <div class="stats-grid reveal">
+      <div><div class="stat-num" data-count="10000" data-suffix="+">0</div><div class="stat-lbl">Farmers</div></div>
+      <div><div class="stat-num" data-count="5000" data-suffix="+">0</div><div class="stat-lbl">Buyers</div></div>
+      <div><div class="stat-num" data-count="25000" data-suffix="+">0</div><div class="stat-lbl">Orders completed</div></div>
+      <div><div class="stat-num" data-count="30" data-suffix="%">0</div><div class="stat-lbl">Avg. supply chain efficiency gain</div></div>
+    </div>
+    <p class="stats-note">Figures are illustrative, based on a demo dataset.</p>
+  </div>
+</section>
+
+<!-- ================= TESTIMONIALS ================= -->
+<section class="sec-pad" style="background:var(--white);">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2>From the people using it</h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <p class="testi-quote">"I can now reach buyers directly and get a better price for my produce."</p>
+        <div class="testi-who"><div class="avatar" style="background:#3F7D58;">M</div><div><div class="name">Muthu Selvam</div><div class="role">Tomato farmer, Erode</div></div></div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-quote">"Ordering in bulk used to take days of calls. Now I place an order and track it the same afternoon."</p>
+        <div class="testi-who"><div class="avatar" style="background:#B9822F;">P</div><div><div class="name">Priya Ramesh</div><div class="role">Bulk buyer, Coimbatore</div></div></div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-quote">"The demand forecast helped me plan my onion harvest around the right week to sell."</p>
+        <div class="testi-who"><div class="avatar" style="background:#173D2E;">K</div><div><div class="name">Kannan FPO</div><div class="role">Farmer Producer Organisation, Salem</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="sec-pad">
+  <div class="wrap">
+    <div class="cta-block reveal">
+      <h2>Let's build a fairer agricultural marketplace.</h2>
+      <div class="actions">
+        <a href="#dashboards" class="btn btn-gold">Join as farmer</a>
+        <a href="#marketplace" class="btn btn-ghost-light">Become a buyer</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#B9D8B7"/><path d="M20 30C20 30 11 25.5 11 18.5C11 14.9101 13.9101 12 17.5 12C18.9797 12 20 13 20 13C20 13 21.0203 12 22.5 12C26.0899 12 29 14.9101 29 18.5C29 25.5 20 30 20 30Z" fill="#173D2E"/></svg>
+          AgriLink AI
+        </div>
+        <p>A direct line between the people who grow food and the people who need it.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram">◐</a>
+          <a href="#" aria-label="Twitter">✳</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul><li><a href="#about">About</a></li><li><a href="#marketplace">Marketplace</a></li><li><a href="#dashboards">Farmers</a></li><li><a href="#dashboards">Buyers</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h5>Operations</h5>
+        <ul><li><a href="#logistics">Logistics</a></li><li><a href="#insights">AI insights</a></li></ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul><li><a href="mailto:hello@agrilink.ai">hello@agrilink.ai</a></li><li><a href="tel:+911234567890">+91 12345 67890</a></li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 AgriLink AI. Demo project.</span>
+      <span>Made for farmers, by design.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- mobile nav ----------
+const burger = document.getElementById('burger');
+const navLinks = document.getElementById('navLinks');
+burger.addEventListener('click', () => {
+  burger.classList.toggle('open');
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  burger.classList.remove('open');
+  navLinks.classList.remove('open');
+}));
+
+// ---------- reveal on scroll ----------
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+// ---------- animated counters ----------
+const counters = document.querySelectorAll('.stat-num');
+const cio = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+      cio.unobserve(el);
+    }
+  });
+}, { threshold: 0.4 });
+counters.forEach(c => cio.observe(c));
+
+// ---------- dashboard tabs ----------
+document.querySelectorAll('.dash-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.dash-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ---------- marketplace data + render ----------
+const PRODUCTS = [
+  { name:"Tomato", cat:"vegetable", farmer:"Ramasamy Farms", location:"Erode", price:32, qty:"420 kg", icon: iconTomato() },
+  { name:"Onion", cat:"vegetable", farmer:"Green Valley Growers", location:"Salem", price:28, qty:"310 kg", icon: iconOnion() },
+  { name:"Potato", cat:"vegetable", farmer:"Nilgiri Farm Collective", location:"Coimbatore", price:24, qty:"600 kg", icon: iconPotato() },
+  { name:"Rice", cat:"grain", farmer:"Kaveri FPO", location:"Thanjavur", price:46, qty:"1,200 kg", icon: iconRice() },
+  { name:"Carrot", cat:"vegetable", farmer:"Green Valley Growers", location:"Salem", price:30, qty:"180 kg", icon: iconCarrot() },
+  { name:"Banana", cat:"fruit", farmer:"Ramasamy Farms", location:"Erode", price:18, qty:"540 dozen", icon: iconBanana() },
+];
+
+function iconTomato(){return `<svg viewBox="0 0 64 64"><path d="M28 12c0-3 3-6 4-6s2 2 4 3c2-1 4-2 5 1-2 1-4 1-5 3" fill="#3F7D58"/><circle cx="32" cy="38" r="20" fill="#E85C4A"/><ellipse cx="26" cy="30" rx="6" ry="4" fill="#F2907F" opacity=".7"/></svg>`}
+function iconOnion(){return `<svg viewBox="0 0 64 64"><path d="M32 8c2 4 3 8 2 12" stroke="#8AA98F" stroke-width="2" fill="none"/><path d="M32 20c12 0 18 12 18 22 0 10-8 16-18 16s-18-6-18-16c0-10 6-22 18-22z" fill="#C88BC9"/><path d="M32 20c8 6 8 30 0 38" stroke="#B36FB5" stroke-width="1.5" fill="none"/></svg>`}
+function iconPotato(){return `<svg viewBox="0 0 64 64"><ellipse cx="32" cy="34" rx="22" ry="16" fill="#C8945A" transform="rotate(-8 32 34)"/><circle cx="24" cy="30" r="1.6" fill="#8A5F34"/><circle cx="36" cy="40" r="1.6" fill="#8A5F34"/><circle cx="40" cy="26" r="1.6" fill="#8A5F34"/></svg>`}
+function iconRice(){return `<svg viewBox="0 0 64 64"><rect x="16" y="24" width="32" height="30" rx="2" fill="#E4C77A"/><rect x="16" y="24" width="32" height="8" fill="#D9A441"/><path d="M32 24c-2-8 0-14 4-18" stroke="#8AA98F" stroke-width="2" fill="none"/></svg>`}
+function iconCarrot(){return `<svg viewBox="0 0 64 64"><path d="M40 12l6 4-5 3z" fill="#5C9C74"/><path d="M22 50l24-32-6-6-30 26z" fill="#E8863C"/><path d="M14 52l6-8 2 6-8 2z" fill="#D9A441"/></svg>`}
+function iconBanana(){return `<svg viewBox="0 0 64 64"><path d="M14 44c6 10 24 12 34 2 4-4 4-10 0-8-6 8-20 10-30 2-4-4-6 0-4 4z" fill="#E9C846"/><path d="M14 44c-2-1-3-4-1-6" stroke="#B9822F" stroke-width="2" fill="none"/></svg>`}
+
+const grid = document.getElementById('productGrid');
+const searchInput = document.getElementById('searchInput');
+const categoryFilter = document.getElementById('categoryFilter');
+const locationFilter = document.getElementById('locationFilter');
+const bought = new Set();
+
+function renderProducts(){
+  const q = searchInput.value.trim().toLowerCase();
+  const cat = categoryFilter.value;
+  const loc = locationFilter.value;
+  const filtered = PRODUCTS.filter(p =>
+    (q === '' || p.name.toLowerCase().includes(q)) &&
+    (cat === 'all' || p.cat === cat) &&
+    (loc === 'all' || p.location === loc)
+  );
+  grid.innerHTML = '';
+  if (filtered.length === 0){
+    grid.innerHTML = '<div class="no-results">No produce matches that search. Try a different crop or location.</div>';
+    return;
+  }
+  filtered.forEach((p, i) => {
+    const key = p.name + p.farmer;
+    const isBought = bought.has(key);
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-media">${p.icon}</div>
+      <div class="product-body">
+        <div class="pname">${p.name}</div>
+        <div class="pmeta">${p.farmer} · ${p.location}</div>
+        <div class="product-row">
+          <div>
+            <div class="price">₹${p.price}<span>/kg</span></div>
+            <div class="stock">${p.qty} available</div>
+          </div>
+          <button class="buy-btn ${isBought ? 'bought' : ''}" data-key="${key}">${isBought ? 'Order placed' : 'Buy now'}</button>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  grid.querySelectorAll('.buy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      bought.add(btn.dataset.key);
+      btn.textContent = 'Order placed';
+      btn.classList.add('bought');
+    });
+  });
+}
+
+searchInput.addEventListener('input', renderProducts);
+categoryFilter.addEventListener('change', renderProducts);
+locationFilter.addEventListener('change', renderProducts);
+renderProducts();
+</script>
+
+</body>
+</html>
